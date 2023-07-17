@@ -1,3 +1,29 @@
+---
+name: LLM Agents
+description: >-
+  用于构建大型语言模型(LLM)控制代理的小型库,该模型深受langchain的启发。
+author:
+  name: mpaepper
+  avatar: https://avatars.githubusercontent.com/u/4135790?s=96&v=4
+contributors:
+  - name: mpaepper
+    avatar: https://avatars.githubusercontent.com/u/4135790?s=64&v=4
+  - name: Zetaphor
+    avatar: https://avatars.githubusercontent.com/u/3112763?s=64&v=4
+  - name: ThingEngineer
+    avatar: https://avatars.githubusercontent.com/u/418426?s=64&v=4
+language:
+  - language: Python
+    percentage: 100
+star: 686
+fork: 41
+url: https://github.com/cloudstudio-platform/llm_agents
+banner: ./banner.png
+icon: https://cs-res.codehub.cn/vscode/python.svg
+video: ./LLM-Agents.mov
+order: 19
+---
+
 ## LLM代理
 
 &nbsp;&nbsp;用于构建大型语言模型(LLM)控制代理的小型库,该模型深受<a href="https://github.com/hwchase17/langchain/" target="_blank">langchain</a>的启发.
@@ -10,33 +36,33 @@
 
 ### 如何运行的
 
-代理运行的工作原理如下:
+&nbsp;&nbsp;代理运行的工作原理如下:
 
-* 它收到提示的指令,告诉它用工具解决任务的基本方法.
-* 工具是代理可以使用的自定义构建的组件
-    * 到目前为止,我们已经实现了在REPL中执行python代码,使用Google搜索以及在Hacker News上搜索的功能.
-* 代理在思想、行动、观察、思想...的循环中进行的.
-    * 思想和行动(以及行动的行动输入)是由大语言模型生成的部分
-    * T观察是通过使用工具生成的(例如Python的print输出或Google搜索的文本结果)
-* LLM在每个循环周期中获取附加到提示的新信息,从而可以根据该信息采取行动
-* 一旦代理获得足够多的信息,它就能够提供最终的答案
+&nbsp;&nbsp;* 它收到提示的指令,告诉它用工具解决任务的基本方法.
+&nbsp;&nbsp;* 工具是代理可以使用的自定义构建的组件
+   &nbsp;&nbsp; * 到目前为止,我们已经实现了在REPL中执行python代码,使用Google搜索以及在Hacker News上搜索的功能.
+&nbsp;&nbsp;* 代理在思想、行动、观察、思想...的循环中进行的.
+   &nbsp;&nbsp; * 思想和行动(以及行动的行动输入)是由大语言模型生成的部分
+   &nbsp;&nbsp; * T观察是通过使用工具生成的(例如Python的print输出或Google搜索的文本结果)
+&nbsp;&nbsp;* LLM在每个循环周期中获取附加到提示的新信息,从而可以根据该信息采取行动
+&nbsp;&nbsp;* 一旦代理获得足够多的信息,它就能够提供最终的答案
 
-有关其工作原理的更多详细信息,请查看 <a href="https://www.paepper.com/blog/posts/intelligent-agents-guided-by-llms/">this blog post</a>
+&nbsp;&nbsp;有关其工作原理的更多详细信息,请查看 <a href="https://www.paepper.com/blog/posts/intelligent-agents-guided-by-llms/">this blog post</a>
 
 ### 如何使用
 
-您可以通过在克隆后在其目录中运行以下命令在本地安装: `pip install -e .` 
+&nbsp;&nbsp;您可以通过在克隆后在其目录中运行以下命令在本地安装: `pip install -e .` 
 
-您还需要提供以下环境变量:
+&nbsp;&nbsp;您还需要提供以下环境变量:
 
-* `OPENAI_API_KEY` 使用OpenAI API (可在以下位置获取: https://platform.openai.com/account/api-keys)
-* `SERPAPI_API_KEY` 如果您使用该工具,请使用Google搜索 (可在以下位置获取: https://serpapi.com/)
+&nbsp;&nbsp;* `OPENAI_API_KEY` 使用OpenAI API (可在以下位置获取: https://platform.openai.com/account/api-keys)
+&nbsp;&nbsp;* `SERPAPI_API_KEY` 如果您使用该工具,请使用Google搜索 (可在以下位置获取: https://serpapi.com/)
 
-您可以简单的导出它们,例如: `export OPENAI_API_KEY='sh-lsdf....'`
+&nbsp;&nbsp;您可以简单的导出它们,例如: `export OPENAI_API_KEY='sh-lsdf....'`
 
-然后您可以运行脚本 `python run_agent.py` 并提出您的问题:
+&nbsp;&nbsp;然后您可以运行脚本 `python run_agent.py` 并提出您的问题:
 
-要构建您自己的代理,请像这样:
+&nbsp;&nbsp;要构建您自己的代理,请像这样:
 
 ```python
 from llm_agents import Agent, ChatLLM, PythonREPLTool, HackerNewsSearchTool, SerpAPITool
@@ -47,4 +73,4 @@ result = agent.run("Your question to the agent")
 print(f"Final answer is {result}")
 ```
 
-当然,您也可以构建自定义工具或省略工具,例如,如果您不想创建SERPAPI密钥.
+&nbsp;&nbsp;当然,您也可以构建自定义工具或省略工具,例如,如果您不想创建SERPAPI密钥.
