@@ -1,49 +1,50 @@
----
-name: Chainlit
-description: >-
-  Build Python LLM apps in minutes ⚡️
-  Chainlit lets you create ChatGPT-like UIs on top of any Python code in minutes! Some of the key features include intermediary steps visualisation, element management & display (images, text, carousel, etc.) as well as cloud deployment.
-author:
-  name: Chainlit
-  avatar: https://avatars.githubusercontent.com/u/128686189?s=64&v=4
-contributors: 
-  - name: willydouhard
-    avatar: https://avatars.githubusercontent.com/u/13104895?s=64&v=4
-  - name: constantinidan  
-    avatar: https://avatars.githubusercontent.com/u/16107237?s=64&v=4
-language:
-  - language: TypeScript
-    percentage: 58.0
-  - language: Python
-    percentage: 41.5
-star: '574'
-fork: '201'
-url: https://github.com/cloudstudio-platform/chainlit
-banner: ./images/quick-start.png
-icon: https://cs-res.codehub.cn/vscode/node.svg
-video: ./images/Chainlit.mov
-license: Apache-2.0
-order: 18
----
+## LLM代理
 
-# JavaScript Snake Game
+用于构建大型语言模型(LLM)控制代理的小型库,该模型深受<a href="https://github.com/hwchase17/langchain/" target="_blank">langchain</a>的启发.
 
-&nbsp;&nbsp;这是一个基于DOM的贪吃蛇游戏，是我十多年前用JavaScript编写的，它被设计的有一种复古的风格。
-## 在线玩游戏!
+目的是能够更好地掌握此类代理的工作原理并且能够通过很少的代码来解释它
 
-&nbsp;&nbsp;原版游戏在这里:
+Langchain很棒,但是它已经有了很多的文件和抽象层,所以我认为从头开始构建一个简单代理的最重要的部分是很棒的.
 
-&nbsp;&nbsp;http://patorjk.com/games/snake
+更多的信息请参见<a href="https://news.ycombinator.com/item?id=35446171">this Hacker News discussion from April 5th 2023</a> 和 <a href="https://www.paepper.com/blog/posts/intelligent-agents-guided-by-llms/">related blog post</a>.
 
+### 如何运行的
 
-## 如何使用
-&nbsp;&nbsp;index.html 文件应该给出怎么使用此代码的用法，但是您可以在下面看到将其初始化到网页内的任何div中.
- 
-    var mySnakeBoard = new SNAKE.Board( {
-                                            boardContainer: "game-area",
-                                            fullScreen: false,
-                                            width: 580,
-                                            height:400
-                                        });
-                                    
-&nbsp;&nbsp;源代码中的注释格式有点奇怪，因为我当时正在使用YUI Doc，它可以从代码生成文档。JavaScript世界里有如此多混乱的东西，这有点糟糕。但我很高兴其余的代码没有使用任何外部库，因为这个游戏在十多年后仍然可以正常工作。
+代理运行的工作原理如下:
+
+* 它收到提示的指令,告诉它用工具解决任务的基本方法.
+* 工具是代理可以使用的自定义构建的组件
+    * 到目前为止,我们已经实现了在REPL中执行python代码,使用Google搜索以及在Hacker News上搜索的功能.
+* 代理在思想、行动、观察、思想...的循环中进行的.
+    * 思想和行动(以及行动的行动输入)是由大语言模型生成的部分
+    * T观察是通过使用工具生成的(例如Python的print输出或Google搜索的文本结果)
+* LLM在每个循环周期中获取附加到提示的新信息,从而可以根据该信息采取行动
+* 一旦代理获得足够多的信息,它就能够提供最终的答案
+
+有关其工作原理的更多详细信息,请查看 <a href="https://www.paepper.com/blog/posts/intelligent-agents-guided-by-llms/">this blog post</a>
+
+### 如何使用
+
+您可以通过在克隆后在其目录中运行以下命令在本地安装: `pip install -e .` 
+
+您还需要提供以下环境变量:
+
+* `OPENAI_API_KEY` 使用OpenAI API (可在以下位置获取: https://platform.openai.com/account/api-keys)
+* `SERPAPI_API_KEY` 如果您使用该工具,请使用Google搜索 (可在以下位置获取: https://serpapi.com/)
+
+您可以简单的导出它们,例如: `export OPENAI_API_KEY='sh-lsdf....'`
+
+然后您可以运行脚本 `python run_agent.py` 并提出您的问题:
+
+要构建您自己的代理,请像这样:
+
+```python
+from llm_agents import Agent, ChatLLM, PythonREPLTool, HackerNewsSearchTool, SerpAPITool
+
+agent = Agent(llm=ChatLLM(), tools=[PythonREPLTool(), SerpAPITool(), HackerNewsSearchTool()])
+result = agent.run("Your question to the agent")
+
+print(f"Final answer is {result}")
+```
+
+当然,您也可以构建自定义工具或省略工具,例如,如果您不想创建SERPAPI密钥.
